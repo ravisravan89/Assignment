@@ -6,7 +6,7 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 
 /**
- * Created by ravisravankumar on 11/07/18.
+ * An interface required to call the api
  */
 
 public interface FactsService {
