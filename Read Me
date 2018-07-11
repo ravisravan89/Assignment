@@ -1,0 +1,4 @@
+This Assignment is intended to use MVVM Architecture
+Retrofit is used for network calls
+Data Binding library is used to create the observable view models
+RxJava is also used.
