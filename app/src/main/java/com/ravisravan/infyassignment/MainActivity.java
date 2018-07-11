@@ -5,11 +5,22 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.ravisravan.infyassignment.models.FactsResponseModel;
+import com.ravisravan.infyassignment.network.APIServiceClient;
+import com.ravisravan.infyassignment.network.FactsService;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class MainActivity extends AppCompatActivity {
+
+    private static String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,8 +33,18 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                FactsService factsService = APIServiceClient.getRetrofitInstance().create(FactsService.class);
+                factsService.getFacts().enqueue(new Callback<FactsResponseModel>() {
+                    @Override
+                    public void onResponse(Call<FactsResponseModel> call, Response<FactsResponseModel> response) {
+                        Log.d(TAG, "Success : "+response.body().toString());
+                    }
+
+                    @Override
+                    public void onFailure(Call<FactsResponseModel> call, Throwable t) {
+                        Log.d(TAG, "Failure : "+t.getLocalizedMessage());
+                    }
+                });
             }
         });
     }
