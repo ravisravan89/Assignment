@@ -1,5 +1,6 @@
 package com.ravisravan.infyassignment;
 
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -10,43 +11,53 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.ravisravan.infyassignment.databinding.ActivityMainBinding;
 import com.ravisravan.infyassignment.models.FactsResponseModel;
 import com.ravisravan.infyassignment.network.APIServiceClient;
 import com.ravisravan.infyassignment.network.FactsService;
+import com.ravisravan.infyassignment.viewmodels.FactsViewModel;
+
+import java.util.Observable;
+import java.util.Observer;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Observer {
 
     private static String TAG = "MainActivity";
+    private ActivityMainBinding activityMainBinding;
+    private FactsViewModel factsViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        initDataBinding();
+        setSupportActionBar(activityMainBinding.toolbar);
+        setupRecyclerView();
+        setupObserver(factsViewModel);
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//            }
+//        });
+    }
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FactsService factsService = APIServiceClient.getRetrofitInstance().create(FactsService.class);
-                factsService.getFacts().enqueue(new Callback<FactsResponseModel>() {
-                    @Override
-                    public void onResponse(Call<FactsResponseModel> call, Response<FactsResponseModel> response) {
-                        Log.d(TAG, "Success : "+response.body().toString());
-                    }
+    private void initDataBinding() {
+        activityMainBinding = DataBindingUtil.setContentView(this,R.layout.activity_main);
+        factsViewModel = new FactsViewModel(this);
+        activityMainBinding.setFactsViewModel(factsViewModel);
+    }
 
-                    @Override
-                    public void onFailure(Call<FactsResponseModel> call, Throwable t) {
-                        Log.d(TAG, "Failure : "+t.getLocalizedMessage());
-                    }
-                });
-            }
-        });
+    private void setupRecyclerView() {
+
+    }
+
+    private void setupObserver(Observable observable) {
+        observable.addObserver(this);
     }
 
     @Override
@@ -69,5 +80,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void update(Observable observable, Object o) {
+        if (observable instanceof FactsViewModel) {
+            activityMainBinding.setFactsViewModel((FactsViewModel)observable);
+        }
     }
 }
