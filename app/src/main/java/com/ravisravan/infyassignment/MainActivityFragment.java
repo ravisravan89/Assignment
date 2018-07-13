@@ -57,6 +57,9 @@ public class MainActivityFragment extends Fragment implements Observer {
     public void update(Observable observable, Object o) {
         if (observable instanceof FactsViewModel) {
             fragmentMainBinding.setFactsViewModel((FactsViewModel)observable);
+            FactsAdapter factsAdapter = (FactsAdapter) fragmentMainBinding.factsRecyclerView.getAdapter();
+            FactsViewModel factsViewModel = (FactsViewModel) observable;
+            factsAdapter.setRowList(factsViewModel.getRowList());
         }
     }
 }

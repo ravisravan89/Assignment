@@ -42,9 +42,15 @@ public class FactsAdapter extends RecyclerView.Adapter<FactsAdapter.FactsAdapter
         return rowList.size();
     }
 
+    public void setRowList(List<Row> rowList) {
+        this.rowList = rowList;
+        notifyDataSetChanged();
+    }
+
     public static class FactsAdapterViewHolder extends RecyclerView.ViewHolder {
 
         FactItemBinding factItemBinding;
+
         public FactsAdapterViewHolder(FactItemBinding factItemBinding) {
             super(factItemBinding.container);
             this.factItemBinding = factItemBinding;
