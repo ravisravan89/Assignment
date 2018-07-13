@@ -35,25 +35,13 @@ public class MainActivity extends AppCompatActivity implements Observer {
         super.onCreate(savedInstanceState);
         initDataBinding();
         setSupportActionBar(activityMainBinding.toolbar);
-        setupRecyclerView();
         setupObserver(factsViewModel);
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//            }
-//        });
     }
 
     private void initDataBinding() {
         activityMainBinding = DataBindingUtil.setContentView(this,R.layout.activity_main);
         factsViewModel = new FactsViewModel(this);
         activityMainBinding.setFactsViewModel(factsViewModel);
-    }
-
-    private void setupRecyclerView() {
-
     }
 
     private void setupObserver(Observable observable) {
@@ -87,5 +75,9 @@ public class MainActivity extends AppCompatActivity implements Observer {
         if (observable instanceof FactsViewModel) {
             activityMainBinding.setFactsViewModel((FactsViewModel)observable);
         }
+    }
+
+    public FactsViewModel getFactsViewModel() {
+        return factsViewModel;
     }
 }
