@@ -47,6 +47,11 @@ public class FactsAdapter extends RecyclerView.Adapter<FactsAdapter.FactsAdapter
         notifyDataSetChanged();
     }
 
+    public void clear() {
+        rowList.clear();
+        notifyDataSetChanged();
+    }
+
     public static class FactsAdapterViewHolder extends RecyclerView.ViewHolder {
 
         FactItemBinding factItemBinding;

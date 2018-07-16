@@ -10,17 +10,23 @@
             type="com.ravisravan.infyassignment.viewmodels.FactsViewModel" />
     </data>
 
-    <android.support.constraint.ConstraintLayout
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context="com.ravisravan.infyassignment.MainActivityFragment"
-        tools:showIn="@layout/activity_main">
+        android:layout_height="match_parent">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/facts_recycler_view"
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="match_parent"
+            tools:context="com.ravisravan.infyassignment.MainActivityFragment"
+            tools:showIn="@layout/activity_main">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/facts_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
 
-    </android.support.constraint.ConstraintLayout>
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
 </layout>

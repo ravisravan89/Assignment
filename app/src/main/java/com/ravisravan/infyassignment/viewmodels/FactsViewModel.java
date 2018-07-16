@@ -39,7 +39,7 @@ public class FactsViewModel extends Observable {
         getFactsList();
     }
 
-    private void getFactsList() {
+    public void getFactsList() {
 
         FactsService factsService = APIServiceClient.getRetrofitInstance().create(FactsService.class);
         Disposable disposable = factsService.getFacts()

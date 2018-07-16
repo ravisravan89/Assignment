@@ -4,6 +4,7 @@ import android.databinding.DataBindingUtil;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +38,13 @@ public class MainActivityFragment extends Fragment implements Observer {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         factsViewModel = ((MainActivity)getActivity()).getFactsViewModel();
+        fragmentMainBinding.swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                ((FactsAdapter)fragmentMainBinding.factsRecyclerView.getAdapter()).clear();
+                factsViewModel.getFactsList();
+            }
+        });
         fragmentMainBinding.setFactsViewModel(factsViewModel);
         initRecyclerView();
     }
@@ -56,6 +64,9 @@ public class MainActivityFragment extends Fragment implements Observer {
     @Override
     public void update(Observable observable, Object o) {
         if (observable instanceof FactsViewModel) {
+            if (fragmentMainBinding.swipeRefreshLayout.isRefreshing()) {
+                fragmentMainBinding.swipeRefreshLayout.setRefreshing(false);
+            }
             fragmentMainBinding.setFactsViewModel((FactsViewModel)observable);
             FactsAdapter factsAdapter = (FactsAdapter) fragmentMainBinding.factsRecyclerView.getAdapter();
             FactsViewModel factsViewModel = (FactsViewModel) observable;
