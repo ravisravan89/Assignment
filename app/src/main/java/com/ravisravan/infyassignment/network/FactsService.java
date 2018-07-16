@@ -2,6 +2,7 @@ package com.ravisravan.infyassignment.network;
 
 import com.ravisravan.infyassignment.models.FactsResponseModel;
 
+import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.http.GET;
 
@@ -12,5 +13,5 @@ import retrofit2.http.GET;
 public interface FactsService {
 
     @GET("s/2iodh4vg0eortkl/facts.js")
-    Call<FactsResponseModel> getFacts();
+    Observable<FactsResponseModel> getFacts();
 }
