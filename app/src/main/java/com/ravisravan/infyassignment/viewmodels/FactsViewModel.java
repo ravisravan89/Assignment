@@ -48,8 +48,10 @@ public class FactsViewModel extends Observable {
                 .subscribe(new Consumer<FactsResponseModel>() {
                     @Override
                     public void accept(FactsResponseModel response) throws Exception {
-                        title = response.getTitle();
-                        updateRowList(response.getRows());
+                        if (response != null) {
+                            title = response.getTitle();
+                            updateRowList(response.getRows());
+                        }
                     }
                 }, new Consumer<Throwable>() {
                     @Override
