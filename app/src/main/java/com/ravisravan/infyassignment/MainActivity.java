@@ -1,18 +1,23 @@
 package com.ravisravan.infyassignment;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.ravisravan.infyassignment.databinding.ActivityMainBinding;
+import com.ravisravan.infyassignment.models.Row;
 import com.ravisravan.infyassignment.viewmodels.FactsViewModel;
 
+import java.util.List;
 import java.util.Observable;
-import java.util.Observer;
 
-public class MainActivity extends AppCompatActivity implements Observer {
+
+public class MainActivity extends AppCompatActivity {
 
     private static String TAG = "MainActivity";
     private ActivityMainBinding activityMainBinding;
@@ -23,17 +28,18 @@ public class MainActivity extends AppCompatActivity implements Observer {
         super.onCreate(savedInstanceState);
         initDataBinding();
         setSupportActionBar(activityMainBinding.toolbar);
-        setupObserver(factsViewModel);
     }
 
     private void initDataBinding() {
         activityMainBinding = DataBindingUtil.setContentView(this,R.layout.activity_main);
-        factsViewModel = new FactsViewModel(this);
+        factsViewModel = ViewModelProviders.of(this).get(FactsViewModel.class);
         activityMainBinding.setFactsViewModel(factsViewModel);
-    }
-
-    private void setupObserver(Observable observable) {
-        observable.addObserver(this);
+        factsViewModel.getFacts().observe(this, new Observer<List<Row>>() {
+            @Override
+            public void onChanged(@Nullable List<Row> rows) {
+                activityMainBinding.setFactsViewModel(factsViewModel);
+            }
+        });
     }
 
     @Override
@@ -56,13 +62,6 @@ public class MainActivity extends AppCompatActivity implements Observer {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void update(Observable observable, Object o) {
-        if (observable instanceof FactsViewModel) {
-            activityMainBinding.setFactsViewModel((FactsViewModel)observable);
-        }
     }
 
     public FactsViewModel getFactsViewModel() {

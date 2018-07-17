@@ -1,5 +1,8 @@
 package com.ravisravan.infyassignment.viewmodels;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.ViewModel;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -26,16 +29,17 @@ import retrofit2.Response;
  * Created by ravisravankumar on 12/07/18.
  */
 
-public class FactsViewModel extends Observable {
+public class FactsViewModel extends ViewModel {
 
-    private Context context;
     private static final String TAG = "FactsViewModel";
     public String title;
     private List<Row> rowList;
+    private MutableLiveData<List<Row>> rowListLiveData;
 
-    public FactsViewModel(@NonNull Context context){
-        this.context = context;
+    public FactsViewModel(){
         this.rowList = new ArrayList<>();
+        rowListLiveData = new MutableLiveData<List<Row>>();
+        rowListLiveData.setValue(rowList);
         getFactsList();
     }
 
@@ -64,11 +68,14 @@ public class FactsViewModel extends Observable {
 
     private void updateRowList(List<Row> rowList) {
         this.rowList = rowList;
-        setChanged();
-        notifyObservers();
+        rowListLiveData.setValue(rowList);
     }
 
     public List<Row> getRowList() {
         return rowList;
+    }
+
+    public LiveData<List<Row>> getFacts() {
+        return this.rowListLiveData;
     }
 }

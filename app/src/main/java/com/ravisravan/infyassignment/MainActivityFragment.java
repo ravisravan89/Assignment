@@ -11,15 +11,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ravisravan.infyassignment.databinding.FragmentMainBinding;
+import com.ravisravan.infyassignment.models.Row;
 import com.ravisravan.infyassignment.viewmodels.FactsViewModel;
 
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MainActivityFragment extends Fragment implements Observer {
+public class MainActivityFragment extends Fragment {
 
     FragmentMainBinding fragmentMainBinding;
     FactsViewModel factsViewModel;
@@ -45,7 +47,19 @@ public class MainActivityFragment extends Fragment implements Observer {
                 factsViewModel.getFactsList();
             }
         });
-        fragmentMainBinding.setFactsViewModel(factsViewModel);
+
+        factsViewModel.getFacts().observe(this, new android.arch.lifecycle.Observer<List<Row>>() {
+            @Override
+            public void onChanged(@Nullable List<Row> rows) {
+                fragmentMainBinding.setFactsViewModel(factsViewModel);
+                if (fragmentMainBinding.swipeRefreshLayout.isRefreshing()) {
+                    fragmentMainBinding.swipeRefreshLayout.setRefreshing(false);
+                }
+                FactsAdapter factsAdapter = (FactsAdapter) fragmentMainBinding.factsRecyclerView.getAdapter();
+                FactsViewModel factsViewModel = ((MainActivity)getActivity()).getFactsViewModel();
+                factsAdapter.setRowList(factsViewModel.getRowList());
+            }
+        });
         initRecyclerView();
     }
 
@@ -58,19 +72,6 @@ public class MainActivityFragment extends Fragment implements Observer {
         FactsAdapter factsAdapter = new FactsAdapter();
         fragmentMainBinding.factsRecyclerView.setAdapter(factsAdapter);
         fragmentMainBinding.factsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        factsViewModel.addObserver(this);
     }
 
-    @Override
-    public void update(Observable observable, Object o) {
-        if (observable instanceof FactsViewModel) {
-            if (fragmentMainBinding.swipeRefreshLayout.isRefreshing()) {
-                fragmentMainBinding.swipeRefreshLayout.setRefreshing(false);
-            }
-            fragmentMainBinding.setFactsViewModel((FactsViewModel)observable);
-            FactsAdapter factsAdapter = (FactsAdapter) fragmentMainBinding.factsRecyclerView.getAdapter();
-            FactsViewModel factsViewModel = (FactsViewModel) observable;
-            factsAdapter.setRowList(factsViewModel.getRowList());
-        }
-    }
 }
