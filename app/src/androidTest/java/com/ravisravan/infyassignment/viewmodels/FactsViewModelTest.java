@@ -25,13 +25,19 @@ import java.util.List;
 public class FactsViewModelTest {
 
     @Rule
-    public ActivityTestRule<MainActivity> activityTestRule = new ActivityTestRule<MainActivity>(MainActivity.class);
+    public final ActivityTestRule<MainActivity> activityTestRule = new ActivityTestRule<>(MainActivity.class);
 
     @Test
-    public void testMethod() {
+    public void testFactsViewModelObjectCreation() {
         MainActivity mainActivity = activityTestRule.getActivity();
         FactsViewModel factsViewModel = mainActivity.getFactsViewModel();
         Assert.assertNotNull(factsViewModel);
+    }
+
+    @Test
+    public void testServerData() {
+        MainActivity mainActivity = activityTestRule.getActivity();
+        FactsViewModel factsViewModel = mainActivity.getFactsViewModel();
         Assert.assertNotNull(factsViewModel.getFacts());
         factsViewModel.getFacts().observe(mainActivity, new Observer<List<Row>>() {
             @Override
@@ -39,7 +45,13 @@ public class FactsViewModelTest {
                 Assert.assertNotNull(rows);
             }
         });
+    }
+
+    @Test
+    public void testForSameInstance() {
+        MainActivity mainActivity = activityTestRule.getActivity();
+        FactsViewModel factsViewModel = mainActivity.getFactsViewModel();
         FactsViewModel factsViewModel1 = ViewModelProviders.of(mainActivity).get(FactsViewModel.class);
-        Assert.assertEquals(factsViewModel,factsViewModel1);
+        Assert.assertSame(factsViewModel,factsViewModel1);
     }
 }

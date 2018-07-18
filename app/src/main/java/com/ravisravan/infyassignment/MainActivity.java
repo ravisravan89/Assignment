@@ -14,7 +14,6 @@ import com.ravisravan.infyassignment.models.Row;
 import com.ravisravan.infyassignment.viewmodels.FactsViewModel;
 
 import java.util.List;
-import java.util.Observable;
 
 
 public class MainActivity extends AppCompatActivity {

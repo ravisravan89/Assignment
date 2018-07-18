@@ -1,5 +1,4 @@
 <resources>
-    <dimen name="fab_margin">16dp</dimen>
     <dimen name="card_padding">4dp</dimen>
     <dimen name="card_corner_radius">4dp</dimen>
     <dimen name="card_elevation">4dp</dimen>
@@ -9,6 +8,6 @@
     <dimen name="image_horizontal_padding">8dp</dimen>
     <dimen name="image_vertical_padding">4dp</dimen>
     <dimen name="zerowidth">0dp</dimen>
-    <dimen name="description_horzontal_padding">8dp</dimen>
+    <dimen name="description_horizontal_padding">8dp</dimen>
     <dimen name="description_vertical_padding">4dp</dimen>
 </resources>

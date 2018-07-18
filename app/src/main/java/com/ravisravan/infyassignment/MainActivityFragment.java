@@ -15,16 +15,14 @@ import com.ravisravan.infyassignment.models.Row;
 import com.ravisravan.infyassignment.viewmodels.FactsViewModel;
 
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
 
 /**
  * A placeholder fragment containing a simple view.
  */
 public class MainActivityFragment extends Fragment {
 
-    FragmentMainBinding fragmentMainBinding;
-    FactsViewModel factsViewModel;
+    private FragmentMainBinding fragmentMainBinding;
+    private FactsViewModel factsViewModel;
 
     public MainActivityFragment() {
     }
@@ -39,6 +37,7 @@ public class MainActivityFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        assert ((MainActivity)getActivity()) != null;
         factsViewModel = ((MainActivity)getActivity()).getFactsViewModel();
         fragmentMainBinding.swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override

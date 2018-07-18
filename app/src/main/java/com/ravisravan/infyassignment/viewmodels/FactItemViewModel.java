@@ -2,11 +2,8 @@ package com.ravisravan.infyassignment.viewmodels;
 
 import android.databinding.BaseObservable;
 import android.databinding.BindingAdapter;
-import android.databinding.ObservableField;
-import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
 import com.ravisravan.infyassignment.GlideApp;
 import com.ravisravan.infyassignment.R;
 import com.ravisravan.infyassignment.models.Row;
@@ -18,7 +15,7 @@ import com.ravisravan.infyassignment.models.Row;
 public class FactItemViewModel extends BaseObservable {
 
     public Row row;
-    public String imageUrl;
+    private String imageUrl;
 
     public FactItemViewModel(Row row) {
         this.row = row;

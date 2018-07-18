@@ -3,10 +3,6 @@ package com.ravisravan.infyassignment.viewmodels;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
-import android.content.Context;
-import android.support.annotation.NonNull;
-import android.util.Log;
-import android.view.View;
 
 import com.ravisravan.infyassignment.models.FactsResponseModel;
 import com.ravisravan.infyassignment.models.Row;
@@ -15,15 +11,11 @@ import com.ravisravan.infyassignment.network.FactsService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Created by ravisravankumar on 12/07/18.
@@ -38,7 +30,7 @@ public class FactsViewModel extends ViewModel {
 
     public FactsViewModel(){
         this.rowList = new ArrayList<>();
-        rowListLiveData = new MutableLiveData<List<Row>>();
+        rowListLiveData = new MutableLiveData<>();
         rowListLiveData.setValue(rowList);
         getFactsList();
     }
