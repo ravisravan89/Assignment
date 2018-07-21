@@ -39,11 +39,22 @@ public class MainActivityFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         assert ((MainActivity)getActivity()) != null;
         factsViewModel = ((MainActivity)getActivity()).getFactsViewModel();
+        if (NetworkUtils.hasInternetConnection(getActivity())) {
+            factsViewModel.getFactsList();
+        } else {
+            factsViewModel.showConnectivityError();
+        }
         fragmentMainBinding.swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                ((FactsAdapter)fragmentMainBinding.factsRecyclerView.getAdapter()).clear();
-                factsViewModel.getFactsList();
+                ((FactsAdapter) fragmentMainBinding.factsRecyclerView.getAdapter()).clear();
+                if (NetworkUtils.hasInternetConnection(getActivity())) {
+                    factsViewModel.getFactsList();
+                } else {
+                    fragmentMainBinding.swipeRefreshLayout.setRefreshing(false);
+                    factsViewModel.showConnectivityError();
+                }
+                fragmentMainBinding.setFactsViewModel(factsViewModel);
             }
         });
 

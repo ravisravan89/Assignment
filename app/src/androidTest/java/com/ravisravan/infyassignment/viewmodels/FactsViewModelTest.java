@@ -8,6 +8,8 @@ import android.support.test.runner.AndroidJUnit4;
 
 import com.ravisravan.infyassignment.MainActivity;
 import com.ravisravan.infyassignment.models.Row;
+import com.ravisravan.infyassignment.network.APIServiceClient;
+import com.ravisravan.infyassignment.network.FactsService;
 
 import junit.framework.Assert;
 
@@ -16,6 +18,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.List;
+
+import retrofit2.Retrofit;
 
 /**
  * Created by ravikumar on 7/18/18.
@@ -53,5 +57,17 @@ public class FactsViewModelTest {
         FactsViewModel factsViewModel = mainActivity.getFactsViewModel();
         FactsViewModel factsViewModel1 = ViewModelProviders.of(mainActivity).get(FactsViewModel.class);
         Assert.assertSame(factsViewModel,factsViewModel1);
+    }
+
+    @Test
+    public void testForRetrofitInstance() {
+        Retrofit retrofit = APIServiceClient.getRetrofitInstance();
+        Assert.assertNotNull(retrofit);
+    }
+
+    @Test
+    public void testFactsService() {
+        FactsService factsService = APIServiceClient.getRetrofitInstance().create(FactsService.class);
+        Assert.assertNotNull(factsService);
     }
 }
