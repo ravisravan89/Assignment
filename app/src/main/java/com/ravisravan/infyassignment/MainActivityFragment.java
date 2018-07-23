@@ -2,6 +2,7 @@ package com.ravisravan.infyassignment;
 
 import android.databinding.DataBindingUtil;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -42,17 +43,25 @@ public class MainActivityFragment extends Fragment {
         if (NetworkUtils.hasInternetConnection(getActivity())) {
             factsViewModel.getFactsList();
         } else {
-            factsViewModel.showConnectivityError();
+            if (factsViewModel.getFacts().getValue().size() == 0) {
+                factsViewModel.showConnectivityError();
+            }
         }
         fragmentMainBinding.swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                ((FactsAdapter) fragmentMainBinding.factsRecyclerView.getAdapter()).clear();
                 if (NetworkUtils.hasInternetConnection(getActivity())) {
+                    ((FactsAdapter) fragmentMainBinding.factsRecyclerView.getAdapter()).clear();
                     factsViewModel.getFactsList();
                 } else {
                     fragmentMainBinding.swipeRefreshLayout.setRefreshing(false);
-                    factsViewModel.showConnectivityError();
+                    if (factsViewModel.getFacts().getValue().size() == 0) {
+                        factsViewModel.showConnectivityError();
+                    } else {
+                        Snackbar snackbar = Snackbar.make(getView(),
+                                R.string.please_check_your_internet_connection, Snackbar.LENGTH_LONG);
+                        snackbar.show();
+                    }
                 }
                 fragmentMainBinding.setFactsViewModel(factsViewModel);
             }
